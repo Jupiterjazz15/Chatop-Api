@@ -1,14 +1,14 @@
 package com.openclassroom.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -36,12 +36,12 @@ public class ChatopApiConfig {
 
     @Bean
    // utilisation de l'algorithme BCrypt pour sécuriser le mdp
-    public BCryptPasswordEncoder () {
+    public BCryptPasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    //création  d'un utilisateur qui est ensuite ajouté à un gestionnaire d'utilisateurs en mémoire.
+    //création d'un utilisateur qui est ensuite ajouté à un gestionnaire d'utilisateurs en mémoire.
     public UserDetailsService users() {
         UserDetails user = User.builder()
                 .username("usertest")
