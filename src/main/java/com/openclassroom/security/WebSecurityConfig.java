@@ -2,7 +2,7 @@ package com.openclassroom.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.openclassrooms.security.jwt.AuthTokenFilter;
+import com.openclassroom.security.jwt.AuthTokenFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
