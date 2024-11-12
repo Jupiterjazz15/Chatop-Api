@@ -1,4 +1,4 @@
-package com.openclassroom.Chatop_Api;
+package com.openclassroom;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

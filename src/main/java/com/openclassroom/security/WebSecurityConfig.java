@@ -1,9 +1,12 @@
-package com.openclassroom.configuration;
+package com.openclassroom.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.openclassrooms.security.jwt.AuthTokenFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,29 +16,36 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class ChatopApiConfig {
+@EnableWebSecurity
+public class WebSecurityConfig {
+
+    private final AuthTokenFilter authTokenFilter;
+    // Constructeur de la class
+    public WebSecurityConfig(AuthTokenFilter authTokenFilter) {
+        this.authTokenFilter = authTokenFilter;
+    }
 
     //La chaîne de filtre
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Désactivation de la protection CSRF (utile pour les API avec les JWT) en utilisant l'attribut http
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .csrf(csrf -> csrf.disable())
                 // Configuration du mode stateless : cela signifie que chaque requête est indépendante
                 // et aucune session n'est maintenue entre les requêtes
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Exige que toutes les requêtes soient authentifiées, sans exception
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                // Configuration de l'authentification via OAuth2 avec JWT pour sécuriser l'accès aux ressources
-                // (utilise les paramètres par défaut pour la gestion des tokens JWT)
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-                // Activation de l'authentification HTTP basique (souvent utilisée pour les tests ou les clients automatisés)
-                .httpBasic(Customizer.withDefaults())
-                // Appel de la mthd build pour construire la chaîne
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/register").permitAll() // Routes publiques
+                        .requestMatchers("/me", "/rentals").authenticated() // Routes sécurisées
+                        .anyRequest().authenticated()
+                        )
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class) // Filtre JWT
                 .build();
     }
 
     @Bean
-   // utilisation de l'algorithme BCrypt pour sécuriser le mdp
+    // utilisation de l'algorithme BCrypt pour sécuriser le mdp
     public BCryptPasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
     }
