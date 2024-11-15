@@ -3,8 +3,8 @@ package com.openclassroom.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.openclassroom.security.jwt.AuthTokenFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,44 +14,42 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     private final AuthTokenFilter authTokenFilter;
-    // Constructeur de la class
+
     public WebSecurityConfig(AuthTokenFilter authTokenFilter) {
         this.authTokenFilter = authTokenFilter;
     }
 
-    //La chaîne de filtre
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Désactivation de la protection CSRF (utile pour les API avec les JWT) en utilisant l'attribut http
         return http
                 .csrf(csrf -> csrf.disable())
-                // Configuration du mode stateless : cela signifie que chaque requête est indépendante
-                // et aucune session n'est maintenue entre les requêtes
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Exige que toutes les requêtes soient authentifiées, sans exception
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register").permitAll() // Routes publiques
-                        .requestMatchers("/me", "/rentals").authenticated() // Routes sécurisées
-                        .anyRequest().authenticated()
-                        )
-                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class) // Filtre JWT
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // Routes publiques
+                        .anyRequest().authenticated() // Toutes les autres routes nécessitent une authentificatio
+                )
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    // utilisation de l'algorithme BCrypt pour sécuriser le mdp
-    public BCryptPasswordEncoder passwordEncoder () {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    //création d'un utilisateur qui est ensuite ajouté à un gestionnaire d'utilisateurs en mémoire.
     public UserDetailsService users() {
         UserDetails user = User.builder()
                 .username("usertest")
