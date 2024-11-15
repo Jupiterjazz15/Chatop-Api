@@ -4,17 +4,17 @@ package com.openclassroom.security.jwt;
 import com.openclassroom.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import io.jsonwebtoken.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import java.io.IOException;
 
 //permet de stocker les infos d'authentification de l'utilisateur dans le contexte de sécurité de Spring.
 // classe abstraite de Spring qui garantit que le filtre est appliqué une seule fois par requête

@@ -1,5 +1,6 @@
 package com.openclassroom.security;
 
+import com.openclassroom.services.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.openclassroom.security.jwt.AuthTokenFilter;
@@ -20,10 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private final AuthTokenFilter authTokenFilter;
-
-    public WebSecurityConfig(AuthTokenFilter authTokenFilter) {
-        this.authTokenFilter = authTokenFilter;
+    @Bean
+    public AuthTokenFilter authTokenFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+        // Injection des dépendances nécessaires pour AuthTokenFilter
+        return new AuthTokenFilter(jwtService, userDetailsService);
     }
 
     @Bean
@@ -32,13 +33,13 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthTokenFilter authTokenFilter) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // Routes publiques
-                        .anyRequest().authenticated() // Toutes les autres routes nécessitent une authentificatio
+                        .anyRequest().authenticated() // Toutes les autres routes nécessitent une authentification
                 )
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
