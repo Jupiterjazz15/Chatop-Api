@@ -1,7 +1,6 @@
 package com.openclassroom.security.jwt;
 // Ces importations incluent des classes Java standard et des classes Servlet, nécessaires
 // pour intercepter et traiter les requêtes HTTP et gérer les exceptions.
-import com.openclassroom.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
