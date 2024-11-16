@@ -1,4 +1,4 @@
-package com.openclassroom.security.services.;
+package com.openclassroom.security.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 // une interface de SSECU pr encapsuler les infos utilisateur nécessaires à l'authentification.
