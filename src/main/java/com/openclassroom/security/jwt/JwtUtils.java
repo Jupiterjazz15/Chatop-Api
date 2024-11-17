@@ -62,7 +62,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         // méthode génère une clé HMAC (basée sur jwtSecret) pour signer les tokens JWT.
     }
-    // je donne un token et on me revonoie l'utiliseteur + plutôt mettre mail
+    // je donne un token et on me revonoie l'utilisateur + plutôt mettre mail
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
                 // permet de lire et analyser un token JWT.
