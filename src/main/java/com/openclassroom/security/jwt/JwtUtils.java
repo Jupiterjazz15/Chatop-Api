@@ -54,7 +54,7 @@ public class JwtUtils {
                 .signWith(key(), SignatureAlgorithm.HS256)
                 // signe le token avec la clé générée par la méthode key() et l'algorithme HS256.
                 .compact();
-                //termine la construction et retourne le token sous forme de chaîne
+                // termine la construction et retourne le token sous forme de chaîne
     }
 
     // Mthd utilisé dans generateJwtTok

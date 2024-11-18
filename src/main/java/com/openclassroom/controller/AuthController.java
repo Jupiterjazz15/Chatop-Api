@@ -2,8 +2,6 @@ package com.openclassroom.controller;
 
 import com.openclassroom.dto.request.LoginRequest;
 import com.openclassroom.dto.request.SignupRequest;
-import com.openclassroom.dto.response.JwtResponse;
-import com.openclassroom.dto.response.SignupResponse;
 import com.openclassroom.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
