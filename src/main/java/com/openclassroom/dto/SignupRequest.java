@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 // Import des annotations pour la validation des champs.
 
 // Classe DTO (Data Transfer Object) utilisé pour transporter les données d'inscription envoyées par un utilisateur.
-public class SingupRequest {
+public class SignupRequest {
     // Déclaration des attributs
     @NotBlank
     @Size(min = 3, max = 20)
