@@ -71,12 +71,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 // Création d'un objet Authentication
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                // infos user trouvées avant
-                                null,
-                                // pas de credential nécessaire, le token suffit
-                                userDetails.getAuthorities());
-                                // Les rôles ou permissions du user
+                                userDetails,// infos user trouvées avant
+                                null,// pas de credential nécessaire, le token suffit
+                                userDetails.getAuthorities());// Les rôles ou permissions du user
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 // Ajout de détails à l'objet authentification (infos spécifiques à la requête HTTP : l'adresse IP ou l'agent utilisateur etc.)
 
@@ -91,8 +88,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         // Passe la requête et la réponse au filtre suivant dans la chaîne, ou directement au contrôleur si c'est le dernier filtre.
     }
 
-    // Mthd privée d'extraction du token depuis les en-têtes de la requête HTTP.
-    private String parseJwt(HttpServletRequest request) {
+    // Mthd public d'extraction du token depuis les en-têtes "Authorization"  de la requête HTTP.
+    public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

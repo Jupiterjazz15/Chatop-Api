@@ -37,6 +37,7 @@ public class JwtUtils {
     @Value("${jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    // Mthd utilisé dans generateJwtTok
     public String generateJwtToken(Authentication authentication) {
         // on passe en paramètre le user actuellement authentifié
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -57,12 +58,12 @@ public class JwtUtils {
                 // termine la construction et retourne le token sous forme de chaîne
     }
 
-    // Mthd utilisé dans generateJwtTok
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         // méthode génère une clé HMAC (basée sur jwtSecret) pour signer les tokens JWT.
     }
-    // je donne un token et on me revonoie l'utilisateur + plutôt mettre mail
+
+    // Je donne un token et on me revonoie l'utilisateur + plutôt mettre mail
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
                 // permet de lire et analyser un token JWT.
@@ -75,7 +76,8 @@ public class JwtUtils {
                 .getSubject();
                 // retourne le sujet (email) inclus dans le token
     }
-    // Mthd pour valider ou non un Toke,
+
+    // Mthd pour valider ou non un Token
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
@@ -92,5 +94,6 @@ public class JwtUtils {
 
         return false;
     }
+
 }
 

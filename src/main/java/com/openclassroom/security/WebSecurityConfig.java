@@ -1,4 +1,4 @@
-package com.chatop.api.security;
+package com.openclassroom.security;
 
 import org.springframework.context.annotation.Configuration;
 // @Configuration = cette classe contient des configurations Spring.
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import com.openclassroom.security.services.UserDetailsServicesImpl;
 // Instance avec le détails des utilisateurs nécessaires à l'authentification
 // Instance qui gère les erreurs d'accès non autorisé.
+import com.openclassroom.security.jwt.AuthEntryPointJwt;
 import com.openclassroom.security.jwt.AuthTokenFilter;
 // Instance de filtre pr gérer les tokens JWT dans chaque requête.
 
@@ -111,11 +112,3 @@ public class WebSecurityConfig {
 }
 
 
-
-
-
-
-
-
-
-}
