@@ -32,9 +32,9 @@ public class JwtUtils {
     // initialisation d'un logger, l'outil utilisé pr générer des logs (dont les erreurs d'authentification JWT)
 
     // INJECTION DES PROPRIETES
-    @Value("${jwtSecret}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
-    @Value("${jwtExpirationMs}")
+    @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
     // Mthd utilisé dans generateJwtTok

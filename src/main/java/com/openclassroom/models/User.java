@@ -53,7 +53,7 @@ public class User {
      // GETTERS &  SETTERS : permettent de lire ou modifier les attributs privés de la classe."
     public Long getId() {
         return id;
-    }Long
+    }
 
     public void setId(Long id) {
         this.id = id;
