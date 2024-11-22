@@ -1,19 +1,16 @@
 package com.openclassroom.dto;
 
-// Classe DTO (Data Transfer Object) utilisé pour transporter une réponse contenant un message
-// (par exemple, une réponse standardisée pour les erreurs ou les succès dans les API) avec un code associé.
-
+// DTO POUR TRANSPORTER UNE REPONSE CONTENANT UN MSG (expl : une réponse standardisée pr les erreurs ou les succès dans les API) avec un code associé)
 public class MessageResponse {
 
-    // Déclaration des attributs
-    private String message;
-    // Contient un message descriptif (succès, erreur, etc.).
-    private int code;
-    // Code numérique associé au message
+    // ATTTRIBUTS
+    private String message; // Contient un message descriptif (succès, erreur, etc.)
+    private int code; // Code numérique associé au message
 
-    // Constructeur : permet de créer une instance de MessageResponse en initialisant uniquement le message.
-    public MessageResponse(String message) {
+    // CONSTRUCTEUR
+    public MessageResponse(String message, int code) {
         this.message = message;
+        this.code = code;
     }
 
     // GETTERS & SETTERS

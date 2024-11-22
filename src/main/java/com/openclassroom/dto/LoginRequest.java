@@ -1,15 +1,13 @@
 package com.openclassroom.dto;
 
-import jakarta.validation.constraints.NotBlank;
-// @NotBlank => annotation pour spécifier que le champs ne doivent pas être vides
+import jakarta.validation.constraints.NotBlank;// Annotation pour spécifier que le champs ne doivent pas être vides
 
-// DTO (Data Transfer Object) utilisé pour transporter les données envoyées par l'utilisateur lors d'une requête de connexion (login)
+// DTO POUR TRANSPORTER LES DONNÉES ENVOYÉES PAR LE USER LORS D'UNE REQUETE DE CONNEXION
 public class LoginRequest {
 
     // déclaration des attributs
     @NotBlank
     private String email;
-
     @NotBlank
     private String password;
 

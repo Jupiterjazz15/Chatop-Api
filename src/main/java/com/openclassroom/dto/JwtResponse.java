@@ -1,18 +1,13 @@
 package com.openclassroom.dto;
 
-
-// DTO (Data Transfer Object) : classe utilisée pr encapsuler la réponse contenant le token JWT envoyé au client après une authentification réussie
-// Elle ne doit faire qu'une seule chose : transporter les données du token
-
+// DTO POUR TRANSPORTER LE TOKEN UNE FOIS L'AUTHENTIFICATION REUSSIE
 public class JwtResponse {
-    // déclaration et initialisation de token
-    private String token;
 
-    // constructeur
-    public JwtResponse(String accessToken) {
-        // accessToken = la chaîne de caractères représentant le token JWT généré après une authentification réussie
-            //  généré par generateJwtToken du JwtUtils
-        this.token = accessToken;
+    private String token;// déclaration de l'attribut token
+
+    // CONSTRUCTEUR
+    public JwtResponse(String jwt) { // jwt = la chaîne de caractères représentant le token généré après une authentification réussi généré par generateJwtToken du JwtUtils
+        this.token = jwt;
     }
 
     // GETTER ET SETTER

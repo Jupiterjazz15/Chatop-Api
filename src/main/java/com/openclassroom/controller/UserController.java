@@ -129,7 +129,7 @@ public class UserController {
             // existsByEmail vient du UserRepo et getEmail de SignUpReq
             return ResponseEntity
                     .badRequest()// Renvoie une réponse HTTP avec le statut 400 (bad request).
-                    .body(new MessageResponse("Email is already used!"));// Renvoie un msg d'erreur dans le corps de la réponse.
+                    .body(new MessageResponse("Email is already used!", 400));// Renvoie un msg d'erreur dans le corps de la réponse.
         }
 
         // Crée une instance d'un utilisateur (nouveau user)

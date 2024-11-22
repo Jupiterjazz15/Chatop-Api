@@ -1,11 +1,10 @@
 package com.openclassroom.dto;
 
-import jakarta.validation.constraints.*;
-// Import des annotations pour la validation des champs.
+import jakarta.validation.constraints.*;// Import des annotations pour la validation des champs.
 
-// Classe DTO (Data Transfer Object) utilisé pour transporter les données d'inscription envoyées par un utilisateur.
+// DTO POUR TRANSPORTER LES DONNES D'INSCRIPTION ENVOYÉES PAR UN USER (PREMIERE CONNEXION)
 public class SignupRequest {
-    // Déclaration des attributs
+    // ATTRIBUTS
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
@@ -14,8 +13,6 @@ public class SignupRequest {
     @Size(max = 50)
     @Email
     private String email;
-
-    //private Set<String> role;
 
     @NotBlank
     @Size(min = 6, max = 40)
