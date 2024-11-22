@@ -175,10 +175,10 @@ public class UserController {
             String jwt = parseJwt(request);
             // Appelle la mthd  `parseJwt` du AuthTokenFilter pour extraire le JWT de la requête HTTP. Cette mthd analyse l'en-tête `Authorization` pour récupérer le token.
 
-            String username = jwtUtils.getUserNameFromJwtToken(jwt);
+            String useremail = jwtUtils.getUserNameFromJwtToken(jwt);
             // Utilise le JWT pour récupérer l'email (ou autre identifiant) de l'utilisateur grâce à `getUserNameFromJwtToken`.
 
-            user = this.userRepository.findByEmail(username);
+            user = this.userRepository.findByEmail(useremail);
             // Recherche l'utilisateur dans la base de données à l'aide de son email avec `findByEmail`.
 
             userResponse = new UserResponse(

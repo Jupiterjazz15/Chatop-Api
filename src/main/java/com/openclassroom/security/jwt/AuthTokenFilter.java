@@ -37,9 +37,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);// utilisation de la mthd parseJwt plus bas qui extrait le token
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 // utilisation de la mthd validateJwtToken de JwtUtils
-                String usermail = jwtUtils.getUserNameFromJwtToken(jwt);
+                String useremail = jwtUtils.getUserNameFromJwtToken(jwt);
                 //  utilisation de la mthd getUserNameFromJwtToken de JwtUtils qui retourne le mail
-                UserDetails userDetails = userDetailsService.loadUserByUsername(usermail);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(useremail);
                 // utilisation du UserDetailsServiceImpl pr récupérer l'instance de UserDetails depuis la DB, en utilisant le email extrait.
 
                 // Création d'un objet Authentication cad un user authentifié
