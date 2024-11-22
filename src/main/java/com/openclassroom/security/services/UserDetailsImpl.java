@@ -1,24 +1,17 @@
 package com.openclassroom.security.services;
-
-import org.springframework.security.core.userdetails.UserDetails;
-// une interface de SSECU pr encapsuler les infos utilisateur nécessaires à l'authentification.
-import com.fasterxml.jackson.annotation.JsonIgnore;
-//  @JsonIgnore annotation Jackson pr exclure certains champs lors de la sérialisation JSON.
-import com.openclassroom.models.User;
-
-import java.util.Objects;
-// classe utilitaire pour comparer et manipuler des objets.
-import java.util.Collection;
-// permet l'utilisation du type de données Collection et notamment List (collection ordonnée d'élément dont on connaît le nbr )
-import org.springframework.security.core.GrantedAuthority;
-// représentent pour SSecu, les permissions/roles d’un utilisateur
+import org.springframework.security.core.userdetails.UserDetails; // une interface de SSECU pr encapsuler les infos user nécessaires à l'authentification
+import com.fasterxml.jackson.annotation.JsonIgnore; // annotation Jackson pr exclure certains champs lors de la sérialisation JSON (transfo en JSON)
+import com.openclassroom.models.User; // ma classe réprésentant les caractéristiques et les données liées à un user
+import java.util.Objects;// classe utilitaire pour comparer et manipuler des objets
+import java.util.Collection;// permet l'utilisation du type de données Collection dont List (collection ordonnée d'élément dont on connaît le nbr)
+import org.springframework.security.core.GrantedAuthority;// représentent pour SSecu, les permissions/roles d’un user
 
 public class UserDetailsImpl implements UserDetails {
-    // décalration des attributs privés
+    // DECLARATION DES ATTRIBUTS PRIVES
     private Long id;
     private String username;
     private String email;
-    @JsonIgnore// pr exclure certains champs dans les réponses JSON (évite exposer le mdp)
+    @JsonIgnore // pr exclure certains champs dans les réponses JSON (éviter exposer le mdp)
     private String password;
 
     // CONSTRUCTEUR pr construire un user avec les infos fournies
@@ -29,22 +22,21 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
     }
 
-    // MÉTHODE STATIQUE : crée une instance de UserDetailsImpl à partir d'un objet User.
-    // Avec `static`, cette mthd peut être appelée sans avoir à instancier sans avoir à instancier un objet UserDetailsImpl au préalable
+    // MÉTHODE STATIQUE : la mthd peut être appelée sans avoir à instancier un objet UserDetailsImpl / la créa de l'instance UserDetailsImpl se fait à partir d'un objet User
     public static UserDetailsImpl build(User user) {
 
         return new UserDetailsImpl(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword()
+                user.getId(),// mthd public du model User
+                user.getUsername(),// mthd public du model User
+                user.getEmail(),// mthd public du model User
+                user.getPassword()// mthd public du model User
         );
     }
 
-    // GETTERS PERSONNALISER
+    // GETTERS PERSONNALISES (NON IMPLÉMENTÉS DE L'INTERFACE USERDETAILS)
     public Long getId() {
         return id;
-    }
+    } // ATTENTION COCO : la mthd est-elle utilisée qlq part ?
 
     public String getEmail() {
         return email;
@@ -74,24 +66,24 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    // MTHDS SPECIFIQUES
+    // MTHD DE L'INTERFACE USERDETAILS POUR CONSIDERES TS LES USERS COMME ACTIVE (pas de cas de comptes suspendus)
     @Override
     public boolean isEnabled() {
         return true;
     }
-    // Les mthds qui overrident héritent toutes de la classe Object "o" est un choix
-    // Vérifie si 2 objets UserDetailsImpl sont égaux
+
+    // MTHD HERITEE DE LA CLASSE OBJET QUI VERIFIE SI DEUX USERDETAILSIMPL SONT EGAUX
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object o) {  // Object : la superclasse Java, donc toutes les classes héritent de sa méthode equals() / "o" est un objet quelcqonque
+        if (this == o) // this = l'instance USI  / on vérifie si les 2 objets pointent vers le même espace mémoire
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (o == null || getClass() != o.getClass()) // vérifie si les 2 objets sont du même type
             return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
+        UserDetailsImpl user = (UserDetailsImpl) o; // convertit l'objet o en un objet de type UDI (comme ils sont égaux)
+        return Objects.equals(id, user.id); // compare les valeurs des IDs des deux objets (this.id et user.id) / si ID égaux la mthd return true
     }
-    // Retourne les permissions (non implémenté dans ce code).
-    // ATTENTION COCO
+
+    // ATTENTION COCO MTHD NON CODEE = Retourne les permissions (non implémenté dans ce code).
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub

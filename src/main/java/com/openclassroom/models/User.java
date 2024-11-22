@@ -50,7 +50,7 @@ public class User {
         this.email = email;
         this.password = password;
     }
-     // GETTERS &  SETTERS : permettent de lire ou modifier les attributs privés de la classe."
+     // GETTERS & SETTERS : permettent de lire ou modifier les attributs privés de la classe"
     public Long getId() {
         return id;
     }
