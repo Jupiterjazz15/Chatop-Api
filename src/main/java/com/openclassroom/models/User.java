@@ -5,6 +5,10 @@ import jakarta.persistence.*; // Fournit les annotations JPA pour gérer les int
 import jakarta.validation.constraints.Email; // Annotation @Email : format valide pour les adresses email
 import jakarta.validation.constraints.NotBlank; // Annotation @NotBlank : champ obligatoire
 import jakarta.validation.constraints.Size; // annotation @Size : taille minimale/maximale
+import org.hibernate.annotations.CreationTimestamp; // annotation pr remplir automatiquement avec la date/heure de création de l'entité.
+import org.hibernate.annotations.UpdateTimestamp;  // annotation pr mettre à jour automatiquement avec la date/heure de la dernière modification de l'entité.
+
+import java.time.LocalDate;
 
 @Entity // cette classe est une entitée JPA = elle sera mappée à une table
 @Table(name = "users")
@@ -29,7 +33,14 @@ public class User {
     @JsonIgnore
     private String password;
 
-    // CONSTRUCEUR SANS ARGUMENT : utile pr JPA et les frameworks (Hibernate) pr de créer une instance de la classe
+    @CreationTimestamp
+    @Column(updatable = false) // La valeur ne change pas après la création.
+    private LocalDate createdAt;
+
+    @UpdateTimestamp
+    private LocalDate updatedAt;
+
+    // CONSTRUCTEUR SANS ARGUMENT : utile pr JPA et les frameworks (Hibernate) pr de créer une instance de la classe
     public User() {}
 
     // CONSTRUCTEUR CLASSIQUE
@@ -70,6 +81,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }
