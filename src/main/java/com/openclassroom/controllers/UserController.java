@@ -1,4 +1,4 @@
-package com.openclassroom.controller;
+package com.openclassroom.controllers;
 
 import java.util.Optional;
 
@@ -9,8 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.openclassroom.dto.MessageResponse;
 import com.openclassroom.dto.UserResponse;
-import org.springframework.web.bind.annotation.CrossOrigin; // Annotation qui permet de configurer les permissions pour les requêtes CORS (Cross-Origin Resource Sharing),
-// afin que les clients sur d'autres domaines puissent accéder à l'API.
+import org.springframework.web.bind.annotation.CrossOrigin; // Prque les clients sur d'autres domaines puissent accéder à l'API (permissions des requêtes Cross-Origin Resource Sharing)
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;// Annotation utilisée pr définir le mapping des requêtes HTTP vers des méthodes spécifiques d'un contrôleur.
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import com.openclassroom.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.openclassroom.security.jwt.JwtUtils;
 import java.util.HashMap;
-import org.slf4j.Logger;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 public class UserController {
 
-    @Autowired // injection de l'instance définit dans WebSecurityconfig
+    @Autowired // injection de l'instance définit dans WebSecurityConfig
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepository userRepository;
