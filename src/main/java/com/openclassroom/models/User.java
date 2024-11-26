@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class User {
 
-    // ATTRIBUTS PRIVES DONC UNIQUEMENT DIRECTEEMNT ACCESSIBLE DANS CETTE CLASSE
-    @Id // cette annotation permet à l'attibut id d'être une clé primaie
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // la valeur de id sera générée automatiquement via la stratégie d'incrémentation propre au SGBD
+    // ATTRIBUTS PRIVES DONC UNIQUEMENT DIRECTEMENT ACCESSIBLE DANS CETTE CLASSE
+    @Id // cette annotation permet à l'attibut id d'être une clé primaire
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // valeur de id sera générée automatiquement via la stratégie d'incrémentation propre au SGBD
     private Long id;
 
     @NotBlank
@@ -87,16 +87,9 @@ public class User {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
 }
