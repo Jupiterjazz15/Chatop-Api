@@ -5,13 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository; // Interface JPA p
 import org.springframework.stereotype.Repository; // Annotation pour indiquer que c'est un Repository
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
-
-    // Méthode pour trouver un rental par son ID (vient directement de JpaRepository  )
-    Optional<Rental> findById(Long id);
 
     // Méthode pour trouver tous les rentals d'un utilisateur (déduite par Spring Data JPA)
     List<Rental> findByOwnerId(Long ownerId);

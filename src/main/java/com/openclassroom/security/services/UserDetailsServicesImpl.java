@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 @Service // OVERRIDE DE LA MTHD LOADBYUSERNAME DE SSECU POUR FAIRE UNE RECHERCHE PAR MAIL
 public class UserDetailsServicesImpl implements UserDetailsService {
 
-    @Autowired  // Injection de dépendance : permet à Spring de fournir une instance de UserRepository.
+    @Autowired  // Injection du UR : permet à Spring de fournir une instance de UR
     UserRepository userRepository;
 
     @Override

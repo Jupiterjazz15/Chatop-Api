@@ -2,7 +2,7 @@ package com.openclassroom.security;
 
 import org.springframework.context.annotation.Configuration; // Annotation indiquant que cette classe contient des configurations Spring.
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // Annotation qu active la sécu basée sur des annotations au niveau des méthodes.
-import org.springframework.beans.factory.annotation.Autowired; // Annotation d'injection les dépendances
+import org.springframework.beans.factory.annotation.Autowired; // Annotation d'injection de dépendances
 import org.springframework.context.annotation.Bean; // Annotation pr déclarer des beans Spring pr la configuration
 import com.openclassroom.security.services.UserDetailsServicesImpl; // Classe qui utilise le UserRepo pr charger les infos d'un user à partir de son email.
 import com.openclassroom.security.jwt.AuthEntryPointJwt; // Classe qui personnalise le msg qd un user n'a pas le droit d'accéder à une ressource
