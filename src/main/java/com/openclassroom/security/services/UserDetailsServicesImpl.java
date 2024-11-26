@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails; // interface d
 import com.openclassroom.models.User;// ma classe réprésentant les caractéristiques et les données liées à un user
 import org.springframework.security.core.userdetails.UsernameNotFoundException; // une classe héritant de RuntimeException de SSECU utilisée pr signaler qu'un user n'a pas été trouvé lors de la tentative de récupération de ses infos.
 
-@Service
+@Service // OVERRIDE DE LA MTHD LOADBYUSERNAME DE SSECU POUR FAIRE UNE RECHERCHE PAR MAIL
 public class UserDetailsServicesImpl implements UserDetailsService {
 
     @Autowired  // Injection de dépendance : permet à Spring de fournir une instance de UserRepository.
     UserRepository userRepository;
 
-    @Override // on override la mthd loadUserByUsername de SSECU pour faire une recherche par mail
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email) // cherche l'instance User existante en utilisant la mthd findByEmail() de notre UserRepository
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));

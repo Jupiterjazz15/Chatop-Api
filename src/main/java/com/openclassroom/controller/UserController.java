@@ -6,7 +6,6 @@ import com.openclassroom.security.jwt.AuthTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.openclassroom.dto.MessageResponse;
 import com.openclassroom.dto.UserResponse;
@@ -20,6 +19,7 @@ import com.openclassroom.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.openclassroom.security.jwt.JwtUtils;
 import java.util.HashMap;
+import org.slf4j.Logger;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import com.openclassroom.dto.LoginRequest;
 import org.springframework.security.core.Authentication;
-import com.openclassroom.security.services.UserDetailsImpl;
 import com.openclassroom.dto.JwtResponse;
 import com.openclassroom.dto.SignupRequest;
 import com.openclassroom.models.User;
@@ -80,18 +79,35 @@ public class UserController {
         }
 
         // Crée une instance d'un utilisateur (nouveau user)
-        User user = new User(signUpRequest.getUsername(),// Utilise les informations envoyées dans `signUpRequest`.
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));// Encode le mot de passe avec `encoder` (par exemple, BCrypt).
-
-        userRepository.save(user);// Sauvegarde l'utilisateur dans la base de données.
+        User user = new User(signUpRequest.getUsername(), // Utilise les informations envoyées dans `signUpRequest`.
+                             signUpRequest.getEmail(),
+                             encoder.encode(signUpRequest.getPassword()) // Encode le mot de passe avec `encoder` (par exemple, BCrypt).
+        );
+        userRepository.save(user); // Sauvegarde l'utilisateur dans la base de données.
 
         Authentication authentication = authenticationManager.authenticate( // Si l'email existe on authentifie le user avec l'email et le mot de passe.
-                new UsernamePasswordAuthenticationToken(signUpRequest.getEmail(), signUpRequest.getPassword()));
-        // `authenticationManager.authenticate` : VERIFIE l'email et le mdp correspondent. Renvoie un objet `Authentication` contenant les infos du user authentifié.
+                new UsernamePasswordAuthenticationToken(
+                        signUpRequest.getEmail(),
+                        signUpRequest.getPassword())
+        );// `authenticationManager.authenticate` : VERIFIE l'email et le mdp correspondent. Renvoie un objet `Authentication` contenant les infos du user authentifié.
+
         SecurityContextHolder.getContext().setAuthentication(authentication); // STOCKE les infos du user authentifié dans le `SecurityContextHolder, ce qui rend le user disponible pour le reste du traitement.
+
         String jwt = jwtUtils.generateJwtToken(authentication);// GENERE un token JWT pour le user authentifié à partir des info contenues dans l'objet `authentication`.
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal(); // RECUPERE les détails de l'utilisateur (email, id, etc.) depuis `authentication`.
+
+        // Création d'une instance `UserResponse` avec les données de l'utilisateur sauvegardé.
+        UserResponse userResponse = new UserResponse(
+                user.getId(), // ID généré pour l'utilisateur.
+                user.getUsername(), // Nom d'utilisateur.
+                user.getEmail(), // Email de l'utilisateur.
+                user.getCreatedAt(), // Date de création de l'utilisateur.
+                user.getUpdatedAt() // Date de la dernière mise à jour.
+        );
+        // Création d'une HashMap pour structurer la réponse contenant le token JWT et les infos utilisateur.
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("token", jwt);
+        responseBody.put("user", userResponse);
+
         return ResponseEntity.ok(new JwtResponse(jwt)); // RETOURNE une réponse HTTP 200 (OK) avec un objet `JwtResponse` contenant le token JWT.
     }
 
@@ -101,7 +117,6 @@ public class UserController {
         // Prend en paramètre un objet `LoginRequest` (envoyé dans le corps de la requête).
         // `@Valid` : vérifie que les champs de `loginRequest` respectent les contraintes définies (ex. : @NotBlank).
         // `@RequestBody` : convertit le corps JSON de la requête en un objet Java.
-
         boolean isExist = this.userRepository.existsByEmail(loginRequest.getEmail()); // Mthd `existsByEmail` de `userRepository` pr vérifier si l'email existe.
 
         if (!isExist) {
@@ -118,10 +133,8 @@ public class UserController {
         // `authenticationManager.authenticate` : VERIFIE l'email et le mdp correspondent. Renvoie un objet `Authentication` contenant les infos du user authentifié.
         SecurityContextHolder.getContext().setAuthentication(authentication); // STOCKE les infos du user authentifié dans le `SecurityContextHolder, ce qui rend le user disponible pour le reste du traitement.
         String jwt = jwtUtils.generateJwtToken(authentication);// GENERE un token JWT pour le user authentifié à partir des info contenues dans l'objet `authentication`.
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal(); // RECUPERE les détails de l'utilisateur (email, id, etc.) depuis `authentication`.
         return ResponseEntity.ok(new JwtResponse(jwt)); // RETOURNE une réponse HTTP 200 (OK) avec un objet `JwtResponse` contenant le token JWT.
     }
-
 
     @GetMapping("/me")// RECUPERER LES INFOS DU USER CONNECTE
     public UserResponse me(HttpServletRequest request) {// Méthode qui renvoie un objet `UserResponse` contenant les détails du user connecté.
@@ -129,7 +142,7 @@ public class UserController {
         Optional<User> user = Optional.empty(); // Variable `user` de type `Optional` cad un conteneur qui peut soit contenir un objet de type User, soit être vide
         UserResponse userResponse = null; // Variable `userResponse` pour stocker la réponse à renvoyer
 
-        try {// Bloque de code entouré par un `try-catch` pour gérer les exceptions qui pourraient survenir.
+        try {// Bloc de code entouré par un `try-catch` pour gérer les exceptions qui pourraient survenir.
             String jwt = this.authTokenFilter.parseJwt(request); // mthd  `parseJwt` du AuthTokenFilter pour extraire le JWT de la requête HTTP.
             String useremail = jwtUtils.getUserNameFromJwtToken(jwt); // Utilise le JWT pour récupérer l'email du user
             user = this.userRepository.findByEmail(useremail); // Recherche l'utilisateur dans la base de données à l'aide de son email
@@ -137,7 +150,9 @@ public class UserController {
             userResponse = new UserResponse(
                     user.get().getId(),
                     user.get().getUsername(),
-                    user.get().getEmail()
+                    user.get().getEmail(),
+                    user.get().getCreatedAt(),
+                    user.get().getUpdatedAt()
             ); // Si le user est trouvé, on initialise un objet `UserResponse` avec les détails de l'utilisateur (mthds de User)
 
         } catch (Exception e) {

@@ -13,14 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // MTHD DE JPAREPOSITORY
     Optional<User> findByEmail(String email);
     // MTHD DE JPAREPOSITORY
-    Optional<User> findById(long id);
+    Optional<User>findById(long id);
     // MTHD DE JPAREPOSITORY POUR EVITER LES DOUBLONS
     Boolean existsByUsername(String username);
     // MTHD DE JPAREPOSITORY POUR EVITER LES DOUBLONS
     Boolean existsByEmail(String email);
-
-    // mthds qui n'est pas dans JpaRepository donc on la créé à la main  // ATTENTION COCO : nécessaire ??
-    @Autowired // ATTENTION COCO : nécessaire ??
-    @Query(value = "SELECT * FROM users WHERE email = :email", nativeQuery = true)
-    Optional<User> findByEmail(@Param("email") String email);
 }
