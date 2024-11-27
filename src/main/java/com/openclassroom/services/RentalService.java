@@ -4,7 +4,6 @@ import com.openclassroom.models.Rental;
 import com.openclassroom.repositories.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired; // Annotation d'injection de dépendances
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,8 @@ public class RentalService {
     // MTHD POUR MAJ UNE LOCATION EXISTANTE
     public Rental updateRental(Long id, Rental updatedRental) {
 
-        Rental rental = getRentalById(id);
+        Rental rental = getRentalById(id)
+                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id)); // Gère le cas où l'ID n'existe pas
 
         // Met à jour les champs de l'entité existante avec les nouvelles données
         rental.setName(updatedRental.getName());
