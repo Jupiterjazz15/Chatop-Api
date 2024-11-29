@@ -48,7 +48,7 @@ public class UserController {
     AuthTokenFilter authTokenFilter;
 
     HashMap<String, Object> responseMessage = null; // Déclaration et initialisation de la var responseMessage, une HashMap utilisée pr stocker des paires clé [String]-valeur [Object].
-    MappingJacksonValue jsonResponse = null; // objet MappingJacksonValue utilisé avec Jackson pr appliquer des règlese sérialisation spécifiques (ex. filtrage, vues) lors de la production d'une réponse JSON.
+    MappingJacksonValue jsonResponse = null; // objet MappingJacksonValue utilisé avec Jackson pr appliquer des règles de sérialisation spécifiques (ex. filtrage, vues) lors de la production d'une réponse JSON.
 
     // CONSTRUCTEUR PAR DÉFAUT : Nécessaire pr des frameworks comme Jackson
     public UserController() {

@@ -41,7 +41,7 @@ public class Rental {
     private String description;
 
     @Column(name = "owner_id", nullable = false) // ID du propriétaire, obligatoire
-    private Integer ownerId;
+    private Long ownerId;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false) // Timestamp automatique lors de la création
@@ -55,7 +55,7 @@ public class Rental {
     public Rental() {}
 
     // CONSTRUCTUER AVEC PARAMETRES
-    public Rental(String name, BigDecimal surface, BigDecimal price, String picture, String description, Integer ownerId) {
+    public Rental(String name, BigDecimal surface, BigDecimal price, String picture, String description, Long ownerId) {
         this.name = name;
         this.surface = surface;
         this.price = price;
@@ -113,11 +113,11 @@ public class Rental {
         this.description = description;
     }
 
-    public Integer getOwnerId() {
+    public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Integer ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 
