@@ -63,7 +63,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and())
                 // gestion de session STATELESS cad que chaque requête doit inclure les infos nécessaires à l'authentificatio (comme un token JWT) car aucune session côté serveur n'est maintenue.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // on peut accéder à ces routes sans authentification
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/retals/**").permitAll()// on peut accéder à ces routes sans authentification
                         .anyRequest().authenticated() // toutes les autres en ont besoin
                 );
 
